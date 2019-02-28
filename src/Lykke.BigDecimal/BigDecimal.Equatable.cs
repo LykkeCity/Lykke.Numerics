@@ -11,7 +11,17 @@ namespace System.Numerics
             }
             else
             {
-                return obj is BigDecimal other && Equals(other);
+                switch (obj)
+                {
+                    case BigDecimal other:
+                        return Equals(other);
+                    case BigInteger other:
+                        return Equals(other);
+                    case decimal other:
+                        return Equals(other);
+                    default:
+                        return false;
+                }
             }
         }
 

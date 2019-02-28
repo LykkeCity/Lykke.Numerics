@@ -36,7 +36,7 @@ namespace System.Numerics
         ///    The second value to add.
         /// </param>
         /// <returns>
-        ///    The sum of left and right.
+        ///    The sum of left and right. The sum's scale equals to the left or right scale, whichever is larger. 
         /// </returns>
         public static BigDecimal Add(
             BigDecimal left,
@@ -56,7 +56,7 @@ namespace System.Numerics
         ///    A value to ceil.
         /// </param>
         /// <returns>
-        ///    The smallest integral value that is greater than or equal to the value parameter.
+        ///    The smallest integral value that is greater than or equal to the value parameter. The scale is preserved.
         /// </returns>
         public static BigDecimal Ceiling(
             BigDecimal value)
@@ -93,11 +93,15 @@ namespace System.Numerics
         ///    A value to divide by.
         /// </param>
         /// <returns>
-        ///    The quotient of the division.
+        ///    The quotient of the division. The quotient's scale equals to the left or right scale, whichever is larger.
         /// </returns>
         /// <exception cref="DivideByZeroException">
         ///    Throws if divisor is zero.
         /// </exception>
+        /// <remarks>
+        ///    Result will be rounded to the scale of either left scale, or right scale, whichever is larger.
+        ///    For example, 1 / 2 = 0, 1 / 3 = 0, 1.0 / 3 = 0.3, 1.0 / 4.00 = 0.25
+        /// </remarks>
         public static BigDecimal Divide(
             BigDecimal left,
             BigDecimal right)
@@ -128,7 +132,7 @@ namespace System.Numerics
         ///    A value to floor.
         /// </param>
         /// <returns>
-        ///    The smallest integral value that is lower than or equal to the value parameter.
+        ///    The smallest integral value that is lower than or equal to the value parameter. The scale is preserved.
         /// </returns>
         public static BigDecimal Floor(
             BigDecimal value)
@@ -167,6 +171,10 @@ namespace System.Numerics
         /// <returns>
         ///    The result of multiplying left and right.
         /// </returns>
+        /// <remarks>
+        ///    Result will be rounded to the scale of either left scale, or right scale, whichever is larger.
+        ///    For example, 0.5 * 0.5 = 0.2, 1.1 * 1.1 = 1.2, 1.10 * 1.1 = 1.21
+        /// </remarks>
         public static BigDecimal Multiply(
             BigDecimal left,
             BigDecimal right)
@@ -191,7 +199,7 @@ namespace System.Numerics
         ///    A value to negate.
         /// </param>
         /// <returns>
-        ///    The result of the value parameter multiplied by negative one.
+        ///    The result of the value parameter multiplied by negative one. The scale is preserved.
         /// </returns>
         public static BigDecimal Negate(
             BigDecimal value)
@@ -206,7 +214,8 @@ namespace System.Numerics
         ///    A value to round.
         /// </param>
         /// <returns>
-        ///    The integer that is nearest to the value parameter. If value is halfway between two integers, one of which is even and the other odd, the even number is returned.
+        ///    The integer that is nearest to the value parameter. If value is halfway between two integers,
+        ///    one of which is even and the other odd, the even number is returned.
         /// </returns>
         public static BigDecimal Round(
             BigDecimal value)
@@ -215,7 +224,8 @@ namespace System.Numerics
         }
 
         /// <summary>
-        ///    Rounds a decimal value to the nearest integer. A parameter specifies how to round the value if it is midway between two other numbers.
+        ///    Rounds a decimal value to the nearest integer. A parameter specifies how to round the value if it
+        ///    is midway between two other numbers.
         /// </summary>
         /// <param name="value">
         ///    A value to round.
@@ -224,7 +234,8 @@ namespace System.Numerics
         ///    A value that specifies how to round value if it is midway between two other numbers.
         /// </param>
         /// <returns>
-        ///    The integer that is nearest to the value parameter. If value is halfway between two numbers, one of which is even and the other odd, the mode parameter determines which of the two numbers is returned.
+        ///    The integer that is nearest to the value parameter. If value is halfway between two numbers, one
+        ///    of which is even and the other odd, the mode parameter determines which of the two numbers is returned.
         /// </returns>
         public static BigDecimal Round(
             BigDecimal value,
@@ -253,7 +264,8 @@ namespace System.Numerics
         }
 
         /// <summary>
-        ///    Rounds a value to a specified number of decimal places. A parameter specifies how to round the value if it is midway between two other numbers.
+        ///    Rounds a value to a specified number of decimal places. A parameter specifies how to round the value
+        ///    if it is midway between two other numbers.
         /// </summary>
         /// <param name="value">
         ///    A value to round.
@@ -265,7 +277,9 @@ namespace System.Numerics
         ///    A value that specifies how to round value if it is midway between two other numbers.
         /// </param>
         /// <returns>
-        ///    The number equivalent to value rounded to decimals number of decimal places. If value is halfway between two numbers, one of which is even and the other odd, the mode parameter determines which of the two numbers is returned.
+        ///    The number equivalent to value rounded to decimals number of decimal places. If value is halfway between
+        ///    two numbers, one of which is even and the other odd, the mode parameter determines which of the two
+        ///    numbers is returned.
         /// </returns>
         public static BigDecimal Round(
             BigDecimal value,
@@ -389,7 +403,7 @@ namespace System.Numerics
         ///    A value to truncate.
         /// </param>
         /// <returns>
-        ///    The result of value rounded toward zero, to the nearest whole number.
+        ///    The result of value rounded toward zero, to the nearest whole number. The scale is not preserved.
         /// </returns>
         public static BigDecimal Truncate(
             BigDecimal value)

@@ -9,7 +9,10 @@ namespace System.Numerics
         ///    The object to compare.
         /// </param>
         /// <returns>
-        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater than the value of the specified object.
+        ///    Returns an integer that indicates whether the value of this instance is less than, equal to,
+        ///    or greater than the value of the specified object. Less than zero if the current instance is less than obj.
+        ///    Zero if the current instance equals obj. Greater than zero if the current instance is greater than obj,
+        ///    or the obj parameter is null.
         /// </returns>
         public int CompareTo(
             object obj)
@@ -50,7 +53,9 @@ namespace System.Numerics
         ///    The object to compare.
         /// </param>
         /// <returns>
-        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater than the value of the specified object.
+        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater
+        ///    than the value of the specified object. Less than zero if the current instance is less than other.
+        ///    Zero if the current instance equals other. Greater than zero if the current instance is greater than other.
         /// </returns>
         public int CompareTo(
             BigDecimal other)
@@ -74,7 +79,9 @@ namespace System.Numerics
         ///    The object to compare.
         /// </param>
         /// <returns>
-        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater than the value of the specified object.
+        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater
+        ///    than the value of the specified object. Less than zero if the current instance is less than other.
+        ///    Zero if the current instance equals other. Greater than zero if the current instance is greater than other.
         /// </returns>
         public int CompareTo(
             BigInteger other)
@@ -89,7 +96,9 @@ namespace System.Numerics
         ///    The object to compare.
         /// </param>
         /// <returns>
-        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater than the value of the specified object.
+        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater
+        ///    than the value of the specified object. Less than zero if the current instance is less than other.
+        ///    Zero if the current instance equals other. Greater than zero if the current instance is greater than other.
         /// </returns>
         public int CompareTo(
             decimal other)
@@ -98,7 +107,8 @@ namespace System.Numerics
         }
 
         /// <summary>
-        ///    Compares two BigDecimal values and returns an integer that indicates whether the first value is less than, equal to, or greater than the second value.
+        ///    Compares two BigDecimal values and returns an integer that indicates whether the first value is less than,
+        ///    equal to, or greater than the second value.
         /// </summary>
         /// <param name="left">
         ///    The first value to compare.
@@ -107,7 +117,10 @@ namespace System.Numerics
         ///    The second value to compare.
         /// </param>
         /// <returns>
-        ///    A signed integer that indicates the relative values of left and right.
+        ///    A signed integer that indicates the relative values of left and right. Less than zero, if left is less than
+        ///    right. Zero if left equals right. Greater than zero if left is greater than right. Less than zero if the
+        ///    current instance is less than other. Zero if the current instance equals other. Greater than zero if
+        ///    the current instance is greater than other.
         /// </returns>
         public static int Compare(
             BigDecimal left,
@@ -116,6 +129,18 @@ namespace System.Numerics
             return left.CompareTo(right);
         }
         
+        /// <summary>
+        ///    Returns the larger of two BigDecimal values.
+        /// </summary>
+        /// <param name="left">
+        ///    The first value to compare.
+        /// </param>
+        /// <param name="right">
+        ///    The second value to compare.
+        /// </param>
+        /// <returns>
+        ///    The left or right parameter, whichever is larger.
+        /// </returns>
         public static BigDecimal Max(
             BigDecimal left,
             BigDecimal right)
@@ -123,6 +148,18 @@ namespace System.Numerics
             return left.CompareTo(right) < 0 ? right : left;
         }
 
+        /// <summary>
+        ///    Returns the smaller of two BigDecimal values.
+        /// </summary>
+        /// <param name="left">
+        ///    The first value to compare.
+        /// </param>
+        /// <param name="right">
+        ///    The second value to compare.
+        /// </param>
+        /// <returns>
+        ///    The left or right parameter, whichever is smaller.
+        /// </returns>
         public static BigDecimal Min(
             BigDecimal left,
             BigDecimal right)

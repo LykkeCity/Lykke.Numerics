@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 namespace System.Numerics
 {
     public partial struct BigDecimal
@@ -11,8 +13,9 @@ namespace System.Numerics
         ///    A value to get absolute value of.
         /// </param>
         /// <returns>
-        ///    The absolute value of value.
+        ///    The absolute value of value parameter.
         /// </returns>
+        [Pure]
         public static BigDecimal Abs(
             BigDecimal value)
         {
@@ -38,6 +41,7 @@ namespace System.Numerics
         /// <returns>
         ///    The sum of left and right. The sum's scale equals to the left or right scale, whichever is larger. 
         /// </returns>
+        [Pure]
         public static BigDecimal Add(
             BigDecimal left,
             BigDecimal right)
@@ -58,6 +62,7 @@ namespace System.Numerics
         /// <returns>
         ///    The smallest integral value that is greater than or equal to the value parameter. The scale is preserved.
         /// </returns>
+        [Pure]
         public static BigDecimal Ceiling(
             BigDecimal value)
         {
@@ -96,16 +101,17 @@ namespace System.Numerics
         ///    The quotient of the division. The quotient's scale equals to the left or right scale, whichever is larger.
         /// </returns>
         /// <exception cref="DivideByZeroException">
-        ///    Throws if divisor is zero.
+        ///    Divisor is zero.
         /// </exception>
         /// <remarks>
         ///    Result will be rounded to the scale of either left scale, or right scale, whichever is larger.
         ///    For example, 1 / 2 = 0, 1 / 3 = 0, 1.0 / 3 = 0.3, 1.0 / 4.00 = 0.25
         /// </remarks>
+        [Pure]
         public static BigDecimal Divide(
             BigDecimal left,
             BigDecimal right)
-        {
+        {   
             if (right == Zero)
             {
                 throw new DivideByZeroException();
@@ -114,7 +120,7 @@ namespace System.Numerics
             var (leftSignificand, rightSignificand) = EqualizeSignificands(left, right);
             var quotientScale = Math.Max(left._scale, right._scale);
 
-            var quotientSignificand = Round
+            var quotientSignificand = RoundSignificand
             (
                 significand: leftSignificand * Pow10(quotientScale * 2) / rightSignificand, 
                 significandScale: quotientScale * 2,
@@ -134,6 +140,7 @@ namespace System.Numerics
         /// <returns>
         ///    The smallest integral value that is lower than or equal to the value parameter. The scale is preserved.
         /// </returns>
+        [Pure]
         public static BigDecimal Floor(
             BigDecimal value)
         {
@@ -175,13 +182,14 @@ namespace System.Numerics
         ///    Result will be rounded to the scale of either left scale, or right scale, whichever is larger.
         ///    For example, 0.5 * 0.5 = 0.2, 1.1 * 1.1 = 1.2, 1.10 * 1.1 = 1.21
         /// </remarks>
+        [Pure]
         public static BigDecimal Multiply(
             BigDecimal left,
             BigDecimal right)
         {
             var (leftSignificand, rightSignificand) = EqualizeSignificands(left, right);
             var productScale = Math.Max(left._scale, right._scale);
-            var productSignificand = Round
+            var productSignificand = RoundSignificand
             (
                 significand: leftSignificand * rightSignificand, 
                 significandScale: productScale * 2,
@@ -201,6 +209,7 @@ namespace System.Numerics
         /// <returns>
         ///    The result of the value parameter multiplied by negative one. The scale is preserved.
         /// </returns>
+        [Pure]
         public static BigDecimal Negate(
             BigDecimal value)
         {
@@ -217,6 +226,7 @@ namespace System.Numerics
         ///    The integer that is nearest to the value parameter. If value is halfway between two integers,
         ///    one of which is even and the other odd, the even number is returned.
         /// </returns>
+        [Pure]
         public static BigDecimal Round(
             BigDecimal value)
         {
@@ -237,6 +247,7 @@ namespace System.Numerics
         ///    The integer that is nearest to the value parameter. If value is halfway between two numbers, one
         ///    of which is even and the other odd, the mode parameter determines which of the two numbers is returned.
         /// </returns>
+        [Pure]
         public static BigDecimal Round(
             BigDecimal value,
             MidpointRounding mode)
@@ -256,6 +267,7 @@ namespace System.Numerics
         /// <returns>
         ///    The number equivalent to value rounded to decimals number of decimal places.
         /// </returns>
+        [Pure]
         public static BigDecimal Round(
             BigDecimal value,
             int scale)
@@ -281,17 +293,60 @@ namespace System.Numerics
         ///    two numbers, one of which is even and the other odd, the mode parameter determines which of the two
         ///    numbers is returned.
         /// </returns>
+        [Pure]
         public static BigDecimal Round(
             BigDecimal value,
             int scale,
             MidpointRounding mode)
         {
-            var significand = Round(value._significand, value._scale, scale, mode);
+            var significand = RoundSignificand(value._significand, value._scale, scale, mode);
             
             return new BigDecimal(significand, scale);
         }
 
-        private static BigInteger Round(
+        /// <summary>
+        ///    Subtracts one specified BigDecimal value from another.
+        /// </summary>
+        /// <param name="left">
+        ///    The minuend.
+        /// </param>
+        /// <param name="right">
+        ///    The subtrahend.
+        /// </param>
+        /// <returns>
+        ///    The result of subtracting right from left.
+        /// </returns>
+        [Pure]
+        public static BigDecimal Subtract(
+            BigDecimal left,
+            BigDecimal right)
+        {
+            var (leftSignificand, rightSignificand) = EqualizeSignificands(left, right);
+            var diffSignificand = leftSignificand - rightSignificand;
+            var diffScale = Math.Max(left._scale, right._scale);
+
+            return new BigDecimal(diffSignificand, diffScale);
+        }
+
+        /// <summary>
+        ///    Returns the integral digits of the specified BigDecimal. Any fractional digits are discarded.
+        /// </summary>
+        /// <param name="value">
+        ///    A value to truncate.
+        /// </param>
+        /// <returns>
+        ///    The result of value rounded toward zero, to the nearest whole number. The scale is not preserved.
+        /// </returns>
+        [Pure]
+        public static BigDecimal Truncate(
+            BigDecimal value)
+        {
+            var significand = value._significand / Pow10(value._scale);
+            
+            return new BigDecimal(significand);
+        }
+
+        private static BigInteger RoundSignificand(
             BigInteger significand,
             int significandScale,
             int scale,
@@ -371,46 +426,6 @@ namespace System.Numerics
                         throw new ArgumentOutOfRangeException(nameof(mode), mode, "Rounding mode is not supported.");
                 }
             }
-        }
-
-        /// <summary>
-        ///    Subtracts one specified BigDecimal value from another.
-        /// </summary>
-        /// <param name="left">
-        ///    The minuend.
-        /// </param>
-        /// <param name="right">
-        ///    The subtrahend.
-        /// </param>
-        /// <returns>
-        ///    The result of subtracting right from left.
-        /// </returns>
-        public static BigDecimal Subtract(
-            BigDecimal left,
-            BigDecimal right)
-        {
-            var (leftSignificand, rightSignificand) = EqualizeSignificands(left, right);
-            var diffSignificand = leftSignificand - rightSignificand;
-            var diffScale = Math.Max(left._scale, right._scale);
-
-            return new BigDecimal(diffSignificand, diffScale);
-        }
-
-        /// <summary>
-        ///    Returns the integral digits of the specified BigDecimal. Any fractional digits are discarded.
-        /// </summary>
-        /// <param name="value">
-        ///    A value to truncate.
-        /// </param>
-        /// <returns>
-        ///    The result of value rounded toward zero, to the nearest whole number. The scale is not preserved.
-        /// </returns>
-        public static BigDecimal Truncate(
-            BigDecimal value)
-        {
-            var significand = value._significand / Pow10(value._scale);
-            
-            return new BigDecimal(significand);
         }
 
         #region Operators

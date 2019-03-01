@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 namespace System.Numerics
 {
     public partial struct BigDecimal : IComparable, IComparable<BigDecimal>, IComparable<BigInteger>, IComparable<decimal>
@@ -14,6 +16,7 @@ namespace System.Numerics
         ///    Zero if the current instance equals obj. Greater than zero if the current instance is greater than obj,
         ///    or the obj parameter is null.
         /// </returns>
+        [Pure]
         public int CompareTo(
             object obj)
         {
@@ -28,6 +31,8 @@ namespace System.Numerics
                 case decimal other:
                     return CompareTo(other);
                 case byte other:
+                    return CompareTo((BigInteger) other);
+                case sbyte other:
                     return CompareTo((BigInteger) other);
                 case int other:
                     return CompareTo((BigInteger) other);
@@ -57,6 +62,7 @@ namespace System.Numerics
         ///    than the value of the specified object. Less than zero if the current instance is less than other.
         ///    Zero if the current instance equals other. Greater than zero if the current instance is greater than other.
         /// </returns>
+        [Pure]
         public int CompareTo(
             BigDecimal other)
         {
@@ -83,6 +89,7 @@ namespace System.Numerics
         ///    than the value of the specified object. Less than zero if the current instance is less than other.
         ///    Zero if the current instance equals other. Greater than zero if the current instance is greater than other.
         /// </returns>
+        [Pure]
         public int CompareTo(
             BigInteger other)
         {
@@ -100,6 +107,7 @@ namespace System.Numerics
         ///    than the value of the specified object. Less than zero if the current instance is less than other.
         ///    Zero if the current instance equals other. Greater than zero if the current instance is greater than other.
         /// </returns>
+        [Pure]
         public int CompareTo(
             decimal other)
         {
@@ -122,6 +130,7 @@ namespace System.Numerics
         ///    current instance is less than other. Zero if the current instance equals other. Greater than zero if
         ///    the current instance is greater than other.
         /// </returns>
+        [Pure]
         public static int Compare(
             BigDecimal left,
             BigDecimal right)
@@ -141,6 +150,7 @@ namespace System.Numerics
         /// <returns>
         ///    The left or right parameter, whichever is larger.
         /// </returns>
+        [Pure]
         public static BigDecimal Max(
             BigDecimal left,
             BigDecimal right)
@@ -160,6 +170,7 @@ namespace System.Numerics
         /// <returns>
         ///    The left or right parameter, whichever is smaller.
         /// </returns>
+        [Pure]
         public static BigDecimal Min(
             BigDecimal left,
             BigDecimal right)

@@ -14,7 +14,8 @@ namespace System.Numerics
 	    private readonly int _trailingZeroesCount;
 	    
 	    
-	    public BigDecimal(decimal value)
+	    public BigDecimal(
+		    decimal value)
         {
 	        var bits = (uint[]) (object) decimal.GetBits(value);
 
@@ -33,38 +34,45 @@ namespace System.Numerics
 	        (_precision, _trailingZeroesCount) = CalculatePrecisionAndTrailingZeroesCount(_significand, _scale);
         }
 
-	    public BigDecimal(int value)
+	    public BigDecimal(
+		    int value)
 		    : this(value, 0)
 	    {
 		    
 	    }
 	    
-	    public BigDecimal(long value)
+	    public BigDecimal(
+		    long value)
 		    : this(value, 0)
 	    {
 		    
 	    }
 	    
-	    public BigDecimal(uint value)
+	    public BigDecimal(
+		    uint value)
 		    : this(value, 0)
 	    {
 		    
 	    }
 	    
-	    public BigDecimal(ulong value)
+	    public BigDecimal(
+		    ulong value)
 		    : this(value, 0)
 	    {
 		    
 	    }
 	    
 	    [SuppressMessage("ReSharper", "IntroduceOptionalParameters.Global")]
-	    public BigDecimal(BigInteger value)
+	    public BigDecimal(
+		    BigInteger value)
 			: this(value, 0)
 	    {
 		    
 	    }
 	    
-        public BigDecimal(BigInteger significand, int scale)
+        public BigDecimal(
+	        BigInteger significand,
+	        int scale)
 		{
 			if (scale < 0)
 			{
@@ -93,11 +101,13 @@ namespace System.Numerics
 	        => _trailingZeroesCount != 0 ? _significand / (10 * _trailingZeroesCount) : _significand;
 
         
-        private (BigInteger, BigInteger) EqualizeSignificands(BigDecimal other)
+        private (BigInteger, BigInteger) EqualizeSignificands(
+	        BigDecimal other)
         {
 	        return EqualizeSignificands(this, other);
         }
         
+        [Pure]
         public override int GetHashCode()
         {
 	        unchecked
@@ -106,6 +116,7 @@ namespace System.Numerics
 	        }
         }
 
+        [Pure]
         public override string ToString()
         {
 	        var s = BigInteger.Abs(_significand).ToString("R");
@@ -124,7 +135,9 @@ namespace System.Numerics
 	        return s;
         }
 
-        public static BigDecimal Parse(string value)
+        [Pure]
+        public static BigDecimal Parse(
+	        [NotNull] string value)
         {
 	        if (value == null)
 	        {
@@ -155,7 +168,10 @@ namespace System.Numerics
 	        }
         }
 
-        public static bool TryParse(string value, out BigDecimal result)
+        [Pure]
+        public static bool TryParse(
+	        [NotNull] string value,
+	        out BigDecimal result)
         {
 	        try
 	        {
@@ -171,7 +187,9 @@ namespace System.Numerics
 	        }
         }
         
-        private static (int, int) CalculatePrecisionAndTrailingZeroesCount(BigInteger significand, int scale)
+        private static (int, int) CalculatePrecisionAndTrailingZeroesCount(
+	        BigInteger significand,
+	        int scale)
         {
 	        var precision = 0;
 	        var trailingZeroesCount = 0;
@@ -213,7 +231,9 @@ namespace System.Numerics
 	        return (precision, trailingZeroesCount);
         }
 
-        private static (BigInteger, BigInteger) EqualizeSignificands(BigDecimal left, BigDecimal right)
+        private static (BigInteger, BigInteger) EqualizeSignificands(
+	        BigDecimal left,
+	        BigDecimal right)
         {
 	        if (left._scale == right._scale)
 	        {

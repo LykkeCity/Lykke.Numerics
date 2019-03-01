@@ -1,7 +1,10 @@
+using JetBrains.Annotations;
+
 namespace System.Numerics
 {
     public partial struct BigDecimal : IEquatable<BigDecimal>, IEquatable<BigInteger>, IEquatable<decimal>
     {
+        [Pure]
         public override bool Equals(
             object obj)
         {
@@ -19,12 +22,30 @@ namespace System.Numerics
                         return Equals(other);
                     case decimal other:
                         return Equals(other);
+                    case byte other:
+                        return Equals((BigInteger) other);
+                    case sbyte other:
+                        return Equals((BigInteger) other);
+                    case int other:
+                        return Equals((BigInteger) other);
+                    case long other:
+                        return Equals((BigInteger) other);
+                    case short other:
+                        return Equals((BigInteger) other);
+                    case uint other:
+                        return Equals((BigInteger) other);
+                    case ulong other:
+                        return Equals((BigInteger) other);
+                    case ushort other:
+                        return Equals((BigInteger) other);
                     default:
                         return false;
                 }
             }
         }
 
+        /// <inheritdoc cref="IEquatable{BigDecimal}" />
+        [Pure]
         public bool Equals(
             BigDecimal other)
         {
@@ -39,12 +60,16 @@ namespace System.Numerics
             }
         }
 
+        /// <inheritdoc cref="IEquatable{BigInteger}" />
+        [Pure]
         public bool Equals(
             BigInteger other)
         {
             return Equals(new BigDecimal(other));
         }
         
+        /// <inheritdoc cref="IEquatable{Decimal}" />
+        [Pure]
         public bool Equals(
             decimal other)
         {

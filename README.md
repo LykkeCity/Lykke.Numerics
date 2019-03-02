@@ -1,2 +1,2 @@
-# Lykke.BigDecimal
-BigDecimal implementation
+# Lykke.Numerics.Money
+Money struct with fixed accuracy implementation

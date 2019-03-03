@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace Lykke.Numerics.Money
@@ -10,6 +11,8 @@ namespace Lykke.Numerics.Money
     [Serializable, PublicAPI]
     public readonly partial struct Money
     {
+	    private static readonly Regex MoneyFormat = new Regex(@"^[+-]?\d+\.?\d*$", RegexOptions.Compiled);
+	    
 	    private readonly int _precision;
 	    private readonly int _scale;
 	    private readonly BigInteger _significand;
@@ -319,6 +322,11 @@ namespace Lykke.Numerics.Money
 	        if (value == null)
 	        {
 		        throw new ArgumentNullException(nameof(value));
+	        }
+
+	        if (!MoneyFormat.IsMatch(value))
+	        {
+		        throw new FormatException($"Specified value [{value}] does not match Money format [{MoneyFormat}]");
 	        }
 
 	        var decimalAndFractionalParts = value.Split('.');

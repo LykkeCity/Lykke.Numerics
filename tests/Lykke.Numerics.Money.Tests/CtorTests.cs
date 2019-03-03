@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -49,12 +50,32 @@ namespace Lykke.Numerics.Money.Tests
         [DataRow("42")]
         [DataRow("42.0")]
         [DataRow("42.42")]
+        [DataRow("+1")]
         public void Parse__Value_Correctly_Parsed(string a)
         {
             Money
                 .Parse(a)
                 .Should()
                 .Be(a);
+        }
+
+        [DataTestMethod]
+        [DataRow("(1)")]
+        [DataRow(" 1")]
+        [DataRow("1 ")]
+        [DataRow("1,2")]
+        [DataRow("1_2")]
+        [DataRow("1 2")]
+        [DataRow(".12")]
+        [DataRow("0.12m")]
+        public void Parse__Invalid_String_Passed__FormatException_Thrown(string a)
+        {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action parse = () => Money.Parse(a);
+
+            parse
+                .Should()
+                .ThrowExactly<FormatException>();
         }
     }
 }

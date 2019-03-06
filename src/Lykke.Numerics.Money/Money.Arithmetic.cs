@@ -91,7 +91,7 @@ namespace Lykke.Numerics.Money
         }
 
         /// <summary>
-        ///    Divides one BigInteger value by another and returns the result.
+        ///    Divides one Money value by another and returns the result.
         /// </summary>
         /// <param name="left">
         ///    A value to be divided.
@@ -236,7 +236,7 @@ namespace Lykke.Numerics.Money
         }
 
         /// <summary>
-        ///    Rounds a decimal value to the nearest integer. A parameter specifies how to round the value if it
+        ///    Rounds a Money value to the nearest integer. A parameter specifies how to round the value if it
         ///    is midway between two other numbers.
         /// </summary>
         /// <param name="value">

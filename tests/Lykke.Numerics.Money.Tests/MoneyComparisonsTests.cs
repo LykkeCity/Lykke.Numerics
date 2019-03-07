@@ -17,8 +17,6 @@ namespace Lykke.Numerics.Money.Tests
             (money >= 41).Should().BeTrue();
             (money <= 42).Should().BeTrue();
             (money >= 42).Should().BeTrue();
-            (money == 42).Should().BeTrue();
-            (money != 41).Should().BeTrue();
             
             (43 >  money).Should().BeTrue();
             (41 <  money).Should().BeTrue();
@@ -26,8 +24,6 @@ namespace Lykke.Numerics.Money.Tests
             (41 <= money).Should().BeTrue();
             (42 <= money).Should().BeTrue();
             (42 >= money).Should().BeTrue();
-            (42 == money).Should().BeTrue();
-            (41 != money).Should().BeTrue();
 
             money
                 .CompareTo(41)
@@ -56,8 +52,6 @@ namespace Lykke.Numerics.Money.Tests
             (money >= 41m).Should().BeTrue();
             (money <= 42m).Should().BeTrue();
             (money >= 42m).Should().BeTrue();
-            (money == 42m).Should().BeTrue();
-            (money != 41m).Should().BeTrue();
             
             (43m >  money).Should().BeTrue();
             (41m <  money).Should().BeTrue();
@@ -65,8 +59,6 @@ namespace Lykke.Numerics.Money.Tests
             (41m <= money).Should().BeTrue();
             (42m <= money).Should().BeTrue();
             (42m >= money).Should().BeTrue();
-            (42m == money).Should().BeTrue();
-            (41m != money).Should().BeTrue();
 
             money
                 .CompareTo(41m)
@@ -82,6 +74,50 @@ namespace Lykke.Numerics.Money.Tests
                 .CompareTo(43m)
                 .Should()
                 .BeNegative();
+        }
+
+        [TestMethod]
+        public void Equals__Integer_Value_Passed__Return_Correct_Result()
+        {
+            var money = new Money(42, 0);
+            
+            (money == 42).Should().BeTrue();
+            (money != 41).Should().BeTrue();
+            
+            (42 == money).Should().BeTrue();
+            (41 != money).Should().BeTrue();
+
+            money
+                .Equals(42)
+                .Should()
+                .BeTrue();
+            
+            money
+                .Equals(41)
+                .Should()
+                .BeFalse();
+        }
+        
+        [TestMethod]
+        public void Equals__Decimal_Value_Passed__Return_Correct_Result()
+        {
+            var money = new Money(42, 0);
+            
+            (money == 42m).Should().BeTrue();
+            (money != 41m).Should().BeTrue();
+
+            (42m == money).Should().BeTrue();
+            (41m != money).Should().BeTrue();
+            
+            money
+                .Equals(42m)
+                .Should()
+                .BeTrue();
+            
+            money
+                .Equals(41m)
+                .Should()
+                .BeFalse();
         }
         
         [TestMethod]

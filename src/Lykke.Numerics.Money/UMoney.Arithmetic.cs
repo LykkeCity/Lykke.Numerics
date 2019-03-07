@@ -216,7 +216,7 @@ namespace Lykke.Numerics.Money
         {
             if (right > left)
             {
-                throw new OverflowException();
+                throw new OverflowException("The result should be grater or equal to zero.");
             }
             
             return new UMoney(left._value - right._value);

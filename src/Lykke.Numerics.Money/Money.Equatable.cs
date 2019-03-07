@@ -25,15 +25,7 @@ namespace Lykke.Numerics.Money
         public bool Equals(
             Money other)
         {
-            if (_scale == other._scale)
-            {
-                return _significand == other._significand;
-            }
-            else
-            {
-                return EffectiveScale     == other.EffectiveScale 
-                    && TrimmedSignificand == other.TrimmedSignificand;
-            }
+            return CompareTo(other) == 0;
         }
 
         #region Operators

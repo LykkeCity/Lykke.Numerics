@@ -31,24 +31,16 @@ namespace Lykke.Numerics.Money
 			_significand = significand;
 			(_precision, _trailingZeroesCount) = CalculatePrecisionAndTrailingZeroesCount(_significand, _scale);
 		}
-
-        
-        private int EffectivePrecision
-	        => _precision - _trailingZeroesCount;
-
-        private int EffectiveScale
-	        => _scale - _trailingZeroesCount;
-
-        private BigInteger TrimmedSignificand
-	        => _trailingZeroesCount != 0 ? _significand / (10 * _trailingZeroesCount) : _significand;
-
         
         [Pure]
         public override int GetHashCode()
         {
+	        var effectiveScale = _scale - _trailingZeroesCount;
+	        var trimmedSignificand = _trailingZeroesCount != 0 ? _significand / (10 * _trailingZeroesCount) : _significand;
+	        
 	        unchecked
 	        {
-		        return (EffectiveScale * 397) ^ TrimmedSignificand.GetHashCode();
+		        return (effectiveScale * 397) ^ trimmedSignificand.GetHashCode();
 	        }
         }
 

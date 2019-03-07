@@ -1,12 +1,11 @@
 using System;
-using System.Numerics;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Lykke.Numerics.Money.Tests
 {
     [TestClass]
-    public class CtorTests
+    public class MoneyCtorTests
     {
         [DataTestMethod]
         [DataRow("0")]

@@ -1,10 +1,9 @@
 using System;
-using System.Numerics;
 using JetBrains.Annotations;
 
 namespace Lykke.Numerics.Money
 {
-    public partial struct Money : IComparable, IComparable<Money>, IComparable<BigInteger>, IComparable<decimal>
+    public partial struct Money : IComparable, IComparable<Money>
     {
         /// <summary>
         ///    Compares this instance to a specified object.
@@ -18,6 +17,9 @@ namespace Lykke.Numerics.Money
         ///    Zero if the current instance equals obj. Greater than zero if the current instance is greater than obj,
         ///    or the obj parameter is null.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        ///    obj is not Money.
+        /// </exception>
         [Pure]
         public int CompareTo(
             object obj)
@@ -28,28 +30,8 @@ namespace Lykke.Numerics.Money
                     return 1;
                 case Money other:
                     return CompareTo(other);
-                case BigInteger other:
-                    return CompareTo(other);
-                case decimal other:
-                    return CompareTo(other);
-                case byte other:
-                    return CompareTo((BigInteger) other);
-                case sbyte other:
-                    return CompareTo((BigInteger) other);
-                case int other:
-                    return CompareTo((BigInteger) other);
-                case long other:
-                    return CompareTo((BigInteger) other);
-                case short other:
-                    return CompareTo((BigInteger) other);
-                case uint other:
-                    return CompareTo((BigInteger) other);
-                case ulong other:
-                    return CompareTo((BigInteger) other);
-                case ushort other:
-                    return CompareTo((BigInteger) other);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(obj), "Comparison with objects of specified type is not supported.");
+                    throw new ArgumentException($"Object is not a {nameof(Money)}");
             }
         }
 
@@ -78,66 +60,6 @@ namespace Lykke.Numerics.Money
 
                 return left.CompareTo(right);
             }
-        }
-
-        /// <summary>
-        ///    Compares this instance to a BigInteger.
-        /// </summary>
-        /// <param name="other">
-        ///    The object to compare.
-        /// </param>
-        /// <returns>
-        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater
-        ///    than the value of the specified object. Less than zero if the current instance is less than other.
-        ///    Zero if the current instance equals other. Greater than zero if the current instance is greater than other.
-        /// </returns>
-        [Pure]
-        public int CompareTo(
-            BigInteger other)
-        {
-            return CompareTo(Create(other, 0));
-        }
-        
-        /// <summary>
-        ///    Compares this instance to a decimal.
-        /// </summary>
-        /// <param name="other">
-        ///    The object to compare.
-        /// </param>
-        /// <returns>
-        ///    Returns an integer that indicates whether the value of this instance is less than, equal to, or greater
-        ///    than the value of the specified object. Less than zero if the current instance is less than other.
-        ///    Zero if the current instance equals other. Greater than zero if the current instance is greater than other.
-        /// </returns>
-        [Pure]
-        public int CompareTo(
-            decimal other)
-        {
-            return CompareTo(Create(other));
-        }
-
-        /// <summary>
-        ///    Compares two Money values and returns an integer that indicates whether the first value is less than,
-        ///    equal to, or greater than the second value.
-        /// </summary>
-        /// <param name="left">
-        ///    The first value to compare.
-        /// </param>
-        /// <param name="right">
-        ///    The second value to compare.
-        /// </param>
-        /// <returns>
-        ///    A signed integer that indicates the relative values of left and right. Less than zero, if left is less than
-        ///    right. Zero if left equals right. Greater than zero if left is greater than right. Less than zero if the
-        ///    current instance is less than other. Zero if the current instance equals other. Greater than zero if
-        ///    the current instance is greater than other.
-        /// </returns>
-        [Pure]
-        public static int Compare(
-            Money left,
-            Money right)
-        {
-            return left.CompareTo(right);
         }
         
         /// <summary>
@@ -182,8 +104,6 @@ namespace Lykke.Numerics.Money
 
         #region Operators
         
-        // Money 
-        
         public static bool operator <(Money left, Money right)
         {
             return left.CompareTo(right) < 0;
@@ -202,90 +122,6 @@ namespace Lykke.Numerics.Money
         public static bool operator >=(Money left, Money right)
         {
             return left.CompareTo(right) >= 0;
-        }
-
-        // BigInteger
-        
-        public static bool operator <(Money left, BigInteger right)
-        {
-            return left.CompareTo(right) < 0;
-        }
-
-        public static bool operator <=(Money left, BigInteger right)
-        {
-            return left.CompareTo(right) <= 0;
-        }
-
-        public static bool operator >(Money left, BigInteger right)
-        {
-            return left.CompareTo(right) > 0;
-        }
-
-        public static bool operator >=(Money left, BigInteger right)
-        {
-            return left.CompareTo(right) >= 0;
-        }
-
-        public static bool operator <(BigInteger left, Money right)
-        {
-            return right.CompareTo(left) > 0;
-        }
-
-        public static bool operator <=(BigInteger left, Money right)
-        {
-            return right.CompareTo(left) >= 0;
-        }
-
-        public static bool operator >(BigInteger left, Money right)
-        {
-            return right.CompareTo(left) < 0;
-        }
-
-        public static bool operator >=(BigInteger left, Money right)
-        {
-            return right.CompareTo(left) <= 0;
-        }
-
-        // Decimal
-        
-        public static bool operator <(Money left, decimal right)
-        {
-            return left.CompareTo(right) < 0;
-        }
-
-        public static bool operator <=(Money left, decimal right)
-        {
-            return left.CompareTo(right) <= 0;
-        }
-
-        public static bool operator >(Money left, decimal right)
-        {
-            return left.CompareTo(right) > 0;
-        }
-
-        public static bool operator >=(Money left, decimal right)
-        {
-            return left.CompareTo(right) >= 0;
-        }
-
-        public static bool operator <(decimal left, Money right)
-        {
-            return right.CompareTo(left) > 0;
-        }
-
-        public static bool operator <=(decimal left, Money right)
-        {
-            return right.CompareTo(left) >= 0;
-        }
-
-        public static bool operator >(decimal left, Money right)
-        {
-            return right.CompareTo(left) < 0;
-        }
-
-        public static bool operator >=(decimal left, Money right)
-        {
-            return right.CompareTo(left) <= 0;
         }
 
         #endregion

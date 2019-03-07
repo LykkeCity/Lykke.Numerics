@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
@@ -32,12 +31,6 @@ namespace Lykke.Numerics.Money
 			_significand = significand;
 			(_precision, _trailingZeroesCount) = CalculatePrecisionAndTrailingZeroesCount(_significand, _scale);
 		}
-        
-        public static Money Zero
-			=> new Money(0, 0);
-        
-        public static Money One
-	        => new Money(1, 0);
 
         
         private int EffectivePrecision
@@ -381,7 +374,7 @@ namespace Lykke.Numerics.Money
 	        }
 	        catch (Exception)
 	        {
-		        result = Zero;
+		        result = 0;
 
 		        return false;
 	        }

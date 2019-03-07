@@ -16,9 +16,9 @@ namespace Lykke.Numerics.Money
         private UMoney(
 	        Money value)
         {
-	        if (value < Money.Zero)
+	        if (value < 0)
 	        {
-		        throw new ArgumentException("Should be greater or equal to zero.", nameof(value));
+		        throw new OverflowException("UMoney value should be greater or equal to zero.");
 	        }
 
 	        _value = value;
@@ -26,22 +26,13 @@ namespace Lykke.Numerics.Money
         
         public UMoney(
             BigInteger significand,
-            int scale)
+            int scale) 
+	        
+	        : this(new Money(significand, scale))
         {
-            if (significand < 0)
-            {
-                throw new ArgumentException("Should be greater or equal to zero.", nameof(significand));
-            }
-            
-            _value = new Money(significand, scale);
+	        
         }
         
-        public static UMoney Zero
-	        => new UMoney(0, 0);
-        
-        public static UMoney One
-	        => new UMoney(1, 0);
-
 
         [Pure]
         public override int GetHashCode()
@@ -294,22 +285,21 @@ namespace Lykke.Numerics.Money
         /// <returns>
         ///    A value that is equivalent to the number specified in the value parameter.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///    The value parameter is null.
-        /// </exception>
         /// <exception cref="FormatException">
         ///    The value parameter is not in the correct format.
         /// </exception>
         [Pure]
         public static UMoney Parse(
-	        [NotNull] string value)
+	        string value)
         {
-	        if (!UMoneyFormat.IsMatch(value))
+	        if (TryParse(value, out var result))
+	        {
+		        return result;
+	        }
+	        else
 	        {
 		        throw new FormatException($"Specified value [{value}] does not match UMoney format [{UMoneyFormat}]");
 	        }
-
-	        return Create(Money.Parse(value));
         }
 
         /// <summary>
@@ -329,18 +319,18 @@ namespace Lykke.Numerics.Money
         /// </returns>
         [Pure]
         public static bool TryParse(
-	        [NotNull] string value,
-	        out Money result)
+	        string value,
+	        out UMoney result)
         {
-	        try
+	        if (value != null && UMoneyFormat.IsMatch(value))
 	        {
-		        result = Parse(value);
+		        result = Create(Money.Parse(value));
 
 		        return true;
 	        }
-	        catch (Exception)
+	        else
 	        {
-		        result = Zero;
+		        result = default;
 
 		        return false;
 	        }

@@ -21,7 +21,7 @@ namespace Lykke.Numerics.Money
         public static Money Abs(
             Money value)
         {
-            if (value < Zero)
+            if (value < 0)
             {
                 return -value;
             }
@@ -68,7 +68,7 @@ namespace Lykke.Numerics.Money
         public static Money Ceiling(
             Money value)
         {
-            if (value == Zero)
+            if (value == 0)
             {
                 return value;
             }
@@ -80,7 +80,7 @@ namespace Lykke.Numerics.Money
                 remainder: out var remainder
             );
 
-            if (remainder != 0 && value > Zero)
+            if (remainder != 0 && value > 0)
             {
                 significand++;
             }
@@ -114,7 +114,7 @@ namespace Lykke.Numerics.Money
             Money left,
             Money right)
         {   
-            if (right == Zero)
+            if (right == 0)
             {
                 throw new DivideByZeroException();
             }
@@ -146,7 +146,7 @@ namespace Lykke.Numerics.Money
         public static Money Floor(
             Money value)
         {
-            if (value == Zero)
+            if (value == 0)
             {
                 return value;
             }
@@ -158,7 +158,7 @@ namespace Lykke.Numerics.Money
                 remainder: out var remainder
             );
 
-            if (remainder != 0 && value < Zero)
+            if (remainder != 0 && value < 0)
             {
                 significand--;
             }
@@ -444,12 +444,12 @@ namespace Lykke.Numerics.Money
         
         public static Money operator ++(Money value)
         {
-            return value + One;
+            return value + 1;
         }
 
         public static Money operator --(Money value)
         {
-            return value - One;
+            return value - 1;
         }
 
         public static Money operator +(Money left, Money right)

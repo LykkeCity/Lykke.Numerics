@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using JetBrains.Annotations;
 
 namespace Lykke.Numerics.Money
@@ -23,7 +22,7 @@ namespace Lykke.Numerics.Money
             UMoney left,
             UMoney right)
         {
-            return new UMoney(left._value + right._value);
+            return Create(left._value + right._value);
         }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace Lykke.Numerics.Money
         public static UMoney Divide(
             UMoney left,
             UMoney right)
-        {   
+        {
             return new UMoney(left._value / right._value);
         }
 
@@ -108,7 +107,7 @@ namespace Lykke.Numerics.Money
         {
             return new UMoney(left._value * right._value);
         }
-
+        
         /// <summary>
         ///    Rounds a value to the nearest integer.
         /// </summary>
@@ -207,6 +206,9 @@ namespace Lykke.Numerics.Money
         /// <returns>
         ///    The result of subtracting right from left.
         /// </returns>
+        /// <exception cref="OverflowException">
+        ///    Result is lower than zero.
+        /// </exception>
         [Pure]
         public static UMoney Subtract(
             UMoney left,
@@ -214,7 +216,7 @@ namespace Lykke.Numerics.Money
         {
             if (right > left)
             {
-                throw new InvalidOperationException("Right should be lower or equal to the left.");
+                throw new OverflowException();
             }
             
             return new UMoney(left._value - right._value);
@@ -238,15 +240,15 @@ namespace Lykke.Numerics.Money
 
         #region Operators
 
-        //public static UMoney operator ++(UMoney value)
-        //{
-        //    return value + One;
-        //}
+        public static UMoney operator ++(UMoney value)
+        {
+            return value + 1;
+        }
 
-        //public static UMoney operator --(UMoney value)
-        //{
-        //    return value - One;
-        //}
+        public static UMoney operator --(UMoney value)
+        {
+            return value - 1;
+        }
 
         public static UMoney operator +(UMoney left, UMoney right)
         {
@@ -266,6 +268,48 @@ namespace Lykke.Numerics.Money
         public static UMoney operator /(UMoney left, UMoney right)
         {
             return Divide(left, right);
+        }
+        
+        // Money
+        
+        public static Money operator +(UMoney left, Money right)
+        {            
+            return left._value + right;
+        }
+        
+        public static Money operator +(Money left, UMoney right)
+        {
+            return left + right._value;
+        }
+        
+        public static Money operator -(UMoney left, Money right)
+        {
+            return left._value - right;
+        }
+        
+        public static Money operator -(Money left, UMoney right)
+        {
+            return left - right._value;
+        }
+        
+        public static Money operator *(UMoney left, Money right)
+        {
+            return left._value * right;
+        }
+        
+        public static Money operator *(Money left, UMoney right)
+        {
+            return left * right._value;
+        }
+        
+        public static Money operator /(UMoney left, Money right)
+        {
+            return left._value / right;
+        }
+        
+        public static Money operator /(Money left, UMoney right)
+        {
+            return left / right._value;
         }
         
         #endregion

@@ -1,10 +1,9 @@
 using System;
-using System.Numerics;
 using JetBrains.Annotations;
 
 namespace Lykke.Numerics.Money
 {
-    public partial struct UMoney : IEquatable<UMoney>, IEquatable<BigInteger>, IEquatable<decimal>
+    public partial struct UMoney : IEquatable<UMoney>, IEquatable<Money>
     {
         [Pure]
         public override bool Equals(
@@ -27,25 +26,17 @@ namespace Lykke.Numerics.Money
             return _value.Equals(other._value);
         }
         
-        /// <inheritdoc cref="IEquatable{BigInteger}" />
+        /// <inheritdoc cref="IEquatable{Money}" />
         [Pure]
         public bool Equals(
-            BigInteger other)
-        {
-            return _value.Equals(other);
-        }
-
-        /// <inheritdoc cref="IEquatable{Decimal}" />
-        [Pure]
-        public bool Equals(
-            decimal other)
+            Money other)
         {
             return _value.Equals(other);
         }
 
         #region Operators
         
-        // Money
+        // UMoney
         
         public static bool operator ==(UMoney left, UMoney right)
         {
@@ -57,46 +48,24 @@ namespace Lykke.Numerics.Money
             return !left.Equals(right);
         }
         
-        // BigInteger
-
-        public static bool operator ==(UMoney left, BigInteger right)
+        // Money
+        
+        public static bool operator ==(UMoney left, Money right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(UMoney left, BigInteger right)
+        public static bool operator !=(UMoney left, Money right)
         {
             return !left.Equals(right);
         }
         
-        public static bool operator ==(BigInteger left, UMoney right)
+        public static bool operator ==(Money left, UMoney right)
         {
             return right.Equals(left);
         }
 
-        public static bool operator !=(BigInteger left, UMoney right)
-        {
-            return !right.Equals(left);
-        }
-        
-        // Decimal
-
-        public static bool operator ==(UMoney left, decimal right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(UMoney left, decimal right)
-        {
-            return !left.Equals(right);
-        }
-        
-        public static bool operator ==(decimal left, UMoney right)
-        {
-            return right.Equals(left);
-        }
-
-        public static bool operator !=(decimal left, UMoney right)
+        public static bool operator !=(Money left, UMoney right)
         {
             return !right.Equals(left);
         }

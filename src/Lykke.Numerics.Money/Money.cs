@@ -302,47 +302,20 @@ namespace Lykke.Numerics.Money
         /// <returns>
         ///    A value that is equivalent to the number specified in the value parameter.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///    The value parameter is null.
-        /// </exception>
         /// <exception cref="FormatException">
         ///    The value parameter is not in the correct format.
         /// </exception>
         [Pure]
         public static Money Parse(
-	        [NotNull] string value)
+	        string value)
         {
-	        if (value == null)
+	        if (TryParse(value, out var result))
 	        {
-		        throw new ArgumentNullException(nameof(value));
+		        return result;
 	        }
-
-	        if (!MoneyFormat.IsMatch(value))
+	        else
 	        {
 		        throw new FormatException($"Specified value [{value}] does not match Money format [{MoneyFormat}]");
-	        }
-
-	        var decimalAndFractionalParts = value.Split('.');
-
-	        switch (decimalAndFractionalParts.Length)
-	        {
-		        case 1:
-		        {
-			        var significand = BigInteger.Parse(value);
-		        
-			        return new Money(significand, 0);
-		        }
-		        case 2:
-		        {
-			        value = string.Concat(decimalAndFractionalParts);
-			        
-			        var significand = BigInteger.Parse(value);
-			        var scale = decimalAndFractionalParts[1].Length;
-		        
-			        return new Money(significand, scale);
-		        }
-		        default:
-			        throw new FormatException();
 	        }
         }
 
@@ -363,21 +336,41 @@ namespace Lykke.Numerics.Money
         /// </returns>
         [Pure]
         public static bool TryParse(
-	        [NotNull] string value,
+	        string value,
 	        out Money result)
         {
-	        try
+	        if (value != null && MoneyFormat.IsMatch(value))
 	        {
-		        result = Parse(value);
+		        var decimalAndFractionalParts = value.Split('.');
 
-		        return true;
-	        }
-	        catch (Exception)
-	        {
-		        result = 0;
+		        // ReSharper disable once SwitchStatementMissingSomeCases
+		        switch (decimalAndFractionalParts.Length)
+		        {
+			        case 1:
+			        {
+				        var significand = BigInteger.Parse(value);
+		        
+				        result = new Money(significand, 0);
 
-		        return false;
+				        return true;
+			        }
+			        case 2:
+			        {
+				        value = string.Concat(decimalAndFractionalParts);
+			        
+				        var significand = BigInteger.Parse(value);
+				        var scale = decimalAndFractionalParts[1].Length;
+		        
+				        result = new Money(significand, scale);
+
+				        return true;
+			        }
+		        }
 	        }
+
+	        result = default;
+
+	        return false;
         }
         
         private static (int, int) CalculatePrecisionAndTrailingZeroesCount(

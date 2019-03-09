@@ -1,70 +1,66 @@
 using System;
-using System.ComponentModel;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace Lykke.Numerics.Money
 {
-	[ImmutableObject(true)]
-    [Serializable, PublicAPI]
-    public readonly partial struct Money
+	[PublicAPI]
+    public readonly partial struct UMoney
     {
-	    private static readonly Regex MoneyFormat = new Regex(@"^[+-]?\d+\.?\d*$", RegexOptions.Compiled);
-	    
-	    private readonly int _precision;
-	    private readonly int _scale;
-	    private readonly BigInteger _significand;
-	    private readonly int _trailingZeroesCount;
-
-	    
-        public Money(
-	        BigInteger significand,
-	        int scale)
-		{
-			if (scale < 0)
-			{
-				throw new ArgumentException("Should be greater or equal to zero.", nameof(scale));
-			}
-
-			_scale = scale;
-			_significand = significand;
-			(_precision, _trailingZeroesCount) = CalculatePrecisionAndTrailingZeroesCount(_significand, _scale);
-		}
+        private static readonly Regex UMoneyFormat = new Regex(@"^[+]?\d+\.?\d*$", RegexOptions.Compiled);
         
+        private readonly Money _value;
+
+
+        private UMoney(
+	        Money value)
+        {
+	        if (value < 0)
+	        {
+		        throw new OverflowException("UMoney value should be greater or equal to zero.");
+	        }
+
+	        _value = value;
+        }
+        
+        public UMoney(
+            BigInteger significand,
+            int scale) 
+	        
+	        : this(new Money(significand, scale))
+        {
+	        
+        }
+        
+
         [Pure]
         public override int GetHashCode()
-        {
-	        var effectiveScale = _scale - _trailingZeroesCount;
-	        var trimmedSignificand = _trailingZeroesCount != 0 ? _significand / (10 * _trailingZeroesCount) : _significand;
-	        
-	        unchecked
-	        {
-		        return (effectiveScale * 397) ^ trimmedSignificand.GetHashCode();
-	        }
-        }
+            => _value.GetHashCode();
 
         [Pure]
         public override string ToString()
-        {
-	        var s = BigInteger.Abs(_significand).ToString("R");
-
-	        if (_scale > 0)
-	        {
-		        s = s.PadLeft(_scale + 1, '0');
-		        s = s.Insert(s.Length - _scale, ".");
-	        }
-
-	        if (_significand.Sign < 0)
-	        {
-		        s = "-" + s;
-	        }
-
-	        return s;
-        }
-
+            => _value.ToString();
+        
+        
         /// <summary>
-        ///    Converts the decimal to its Money equivalent.
+        ///    Converts the Money to its UMoney equivalent.
+        /// </summary>
+        /// <param name="value">
+        ///    A Money value to convert.
+        /// </param>
+        /// <returns>
+        ///    A value that is equivalent to the number specified in the value parameter.
+        /// </returns>
+        [Pure]
+        public static UMoney Create(
+	        Money value)
+        {
+	        return new UMoney(value);
+        }
+        
+        /// <summary>
+        ///    Converts the decimal to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A decimal value to convert.
@@ -73,16 +69,14 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        decimal value)
         {
-	        var (significand, scale) = value.GetSignificandAndScale();
-	        
-	        return new Money(significand, scale);
+	        return Create(Money.Create(value));
         }
         
         /// <summary>
-        ///    Converts the decimal to its Money equivalent, rounded according to the specified accuracy.
+        ///    Converts the decimal to its UMoney equivalent, rounded according to the specified accuracy.
         /// </summary>
         /// <param name="value">
         ///    A decimal value to convert.
@@ -95,18 +89,15 @@ namespace Lykke.Numerics.Money
         ///    the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        decimal value,
 	        int accuracy)
         {
-	        var (significand, scale) = value.GetSignificandAndScale();
-	        var money = new Money(significand, scale);
-
-	        return scale == accuracy ? money : Round(money, accuracy);
+	        return Create(Money.Create(value));
         }
 
         /// <summary>
-        ///    Converts the BigInteger to its Money equivalent.
+        ///    Converts the BigInteger to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A BigInteger value to convert.
@@ -118,15 +109,15 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        BigInteger value,
 	        int accuracy)
         {
-	        return new Money(value * Pow10(accuracy), accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
-        ///    Converts the byte to its Money equivalent.
+        ///    Converts the byte to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A byte value to convert.
@@ -138,15 +129,15 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        byte value,
 	        int accuracy)
         {
-	        return Create((BigInteger) value, accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
-        ///    Converts the sbyte to its Money equivalent.
+        ///    Converts the sbyte to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A sbyte value to convert.
@@ -158,15 +149,15 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        sbyte value,
 	        int accuracy)
         {
-	        return Create((BigInteger) value, accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
-        ///    Converts the short to its Money equivalent.
+        ///    Converts the short to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A short value to convert.
@@ -178,15 +169,15 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        short value,
 	        int accuracy)
         {
-	        return Create((BigInteger) value, accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
-        ///    Converts the ushort to its Money equivalent.
+        ///    Converts the ushort to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A ushort value to convert.
@@ -198,15 +189,15 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        ushort value,
 	        int accuracy)
         {
-	        return Create((BigInteger) value, accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
-        ///    Converts the int to its Money equivalent.
+        ///    Converts the int to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A int value to convert.
@@ -218,15 +209,15 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        int value,
 	        int accuracy)
         {
-	        return Create((BigInteger) value, accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
-        ///    Converts the uint to its Money equivalent.
+        ///    Converts the uint to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A uint value to convert.
@@ -238,15 +229,15 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        uint value,
 	        int accuracy)
         {
-	        return Create((BigInteger) value, accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
-        ///    Converts the long to its Money equivalent.
+        ///    Converts the long to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A long value to convert.
@@ -258,15 +249,15 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        long value,
 	        int accuracy)
         {
-	        return Create((BigInteger) value, accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
-        ///    Converts the ulong to its Money equivalent.
+        ///    Converts the ulong to its UMoney equivalent.
         /// </summary>
         /// <param name="value">
         ///    A ulong value to convert.
@@ -278,11 +269,11 @@ namespace Lykke.Numerics.Money
         ///    A value that is equivalent to the number specified in the value parameter with the specified accuracy.
         /// </returns>
         [Pure]
-        public static Money Create(
+        public static UMoney Create(
 	        ulong value,
 	        int accuracy)
         {
-	        return Create((BigInteger) value, accuracy);
+	        return Create(Money.Create(value, accuracy));
         }
         
         /// <summary>
@@ -298,7 +289,7 @@ namespace Lykke.Numerics.Money
         ///    The value parameter is not in the correct format.
         /// </exception>
         [Pure]
-        public static Money Parse(
+        public static UMoney Parse(
 	        string value)
         {
 	        if (TryParse(value, out var result))
@@ -307,7 +298,7 @@ namespace Lykke.Numerics.Money
 	        }
 	        else
 	        {
-		        throw new FormatException($"Specified value [{value}] does not match Money format [{MoneyFormat}]");
+		        throw new FormatException($"Specified value [{value}] does not match UMoney format [{UMoneyFormat}]");
 	        }
         }
 
@@ -329,119 +320,20 @@ namespace Lykke.Numerics.Money
         [Pure]
         public static bool TryParse(
 	        string value,
-	        out Money result)
+	        out UMoney result)
         {
-	        if (value != null && MoneyFormat.IsMatch(value))
+	        if (value != null && UMoneyFormat.IsMatch(value))
 	        {
-		        var decimalAndFractionalParts = value.Split('.');
+		        result = Create(Money.Parse(value));
 
-		        // ReSharper disable once SwitchStatementMissingSomeCases
-		        switch (decimalAndFractionalParts.Length)
-		        {
-			        case 1:
-			        {
-				        var significand = BigInteger.Parse(value);
-		        
-				        result = new Money(significand, 0);
-
-				        return true;
-			        }
-			        case 2:
-			        {
-				        value = string.Concat(decimalAndFractionalParts);
-			        
-				        var significand = BigInteger.Parse(value);
-				        var scale = decimalAndFractionalParts[1].Length;
-		        
-				        result = new Money(significand, scale);
-
-				        return true;
-			        }
-		        }
-	        }
-
-	        result = default;
-
-	        return false;
-        }
-        
-        private static (int, int) CalculatePrecisionAndTrailingZeroesCount(
-	        BigInteger significand,
-	        int scale)
-        {
-	        var precision = 0;
-	        var trailingZeroesCount = 0;
-
-	        var precisionCalculated = false;
-	        var trailingZeroesCountCalculated = false;
-
-	        var tmp = significand;
-
-	        while (!precisionCalculated || !trailingZeroesCountCalculated)
-	        {
-		        if (!precisionCalculated)
-		        {
-			        if (tmp >= 1)
-			        {
-				        precision++;
-			        }
-			        else
-			        {
-				        precisionCalculated = true;
-			        }
-		        }
-
-		        if (!trailingZeroesCountCalculated)
-		        {
-			        if (tmp % 10 == 0 && trailingZeroesCount < scale)
-			        {
-				        trailingZeroesCount++;
-			        }
-			        else
-			        {
-				        trailingZeroesCountCalculated = true;
-			        }
-		        }
-
-		        tmp /= 10;
-	        }
-
-	        return (precision, trailingZeroesCount);
-        }
-
-        private static (BigInteger, BigInteger) EqualizeSignificands(
-	        Money left,
-	        Money right)
-        {
-	        if (left._scale == right._scale)
-	        {
-		        return (left._significand, right._significand);
+		        return true;
 	        }
 	        else
 	        {
-		        var leftExponent = 0;
-		        var rightExponent = 0;
-		        
-		        if (left._scale > right._scale)
-		        {
-			        rightExponent = left._scale - right._scale;
-		        }
-		        else
-		        {
-			        leftExponent = right._scale - left._scale;
-		        }
+		        result = default;
 
-		        var leftSignificand  = left._significand  * Pow10(leftExponent);
-		        var rightSignificand = right._significand * Pow10(rightExponent);
-
-		        return (leftSignificand, rightSignificand);
+		        return false;
 	        }
-        }
-
-        private static BigInteger Pow10(
-	        int scale)
-        {
-	        return BigInteger.Pow(10, scale);
         }
     }
 }

@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
-using System.Numerics;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Lykke.Numerics.Money.Tests
 {
     [TestClass]
-    public class ArithmeticTests
+    public class MoneyArithmeticTests
     {
         [DataTestMethod]
         [DataRow("1.0", "1.0")]
@@ -96,6 +95,7 @@ namespace Lykke.Numerics.Money.Tests
         [TestMethod]
         public void Divide__Divider_Is_Zero__DivideByZeroException_Thrown()
         {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
             Action divisionByZero = () => Money.Divide(1, 0);
 
             divisionByZero
@@ -250,6 +250,7 @@ namespace Lykke.Numerics.Money.Tests
         {
             foreach (var mode in Enum.GetValues(typeof(MidpointRounding)).Cast<MidpointRounding>())
             {
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                 Action round = () => Money.Round(0.5m, mode);
 
                 round

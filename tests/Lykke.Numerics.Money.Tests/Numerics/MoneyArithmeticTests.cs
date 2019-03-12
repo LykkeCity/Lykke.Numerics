@@ -205,6 +205,7 @@ namespace Lykke.Numerics
         }
 
         [DataTestMethod]
+        [DataRow("0.1",      "0.10"   )]
         [DataRow("100",      "100.00" )]
         [DataRow("100.000",  "100.00" )]
         [DataRow("100.001",  "100.00" )]

@@ -361,7 +361,7 @@ namespace Lykke.Numerics
             
             if (significandScale <= scale)
             {
-                return significand * Pow10(significandScale + scale);
+                return significand * Pow10(scale - significandScale);
             }
             else
             {

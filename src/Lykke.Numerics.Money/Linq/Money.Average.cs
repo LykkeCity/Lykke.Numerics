@@ -14,7 +14,7 @@ namespace Lykke.Linq
         {
             if (source == null)
             {
-                throw SourceArgumentIsNullException();
+                throw SourceArgumentNullException();
             }
 
             using (var enumerator = source.GetEnumerator())
@@ -45,7 +45,7 @@ namespace Lykke.Linq
         {
             if (source == null)
             {
-                throw SourceArgumentIsNullException();
+                throw SourceArgumentNullException();
             }
 
             using (var enumerator = source.GetEnumerator())

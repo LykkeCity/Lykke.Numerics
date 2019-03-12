@@ -14,7 +14,7 @@ namespace Lykke.Linq
         {
             if (source == null)
             {
-                throw SourceArgumentIsNullException();
+                throw SourceArgumentNullException();
             }
 
             var sum = (UMoney) 0;
@@ -28,7 +28,7 @@ namespace Lykke.Linq
         {
             if (source == null)
             {
-                throw SourceArgumentIsNullException();
+                throw SourceArgumentNullException();
             }
 
             var sum = (UMoney) 0;

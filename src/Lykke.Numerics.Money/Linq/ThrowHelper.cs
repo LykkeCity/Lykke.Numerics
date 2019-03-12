@@ -4,7 +4,7 @@ namespace Lykke.Linq
 {
     internal static class ThrowHelper
     {
-        public static ArgumentNullException SourceArgumentIsNullException()
+        public static ArgumentNullException SourceArgumentNullException()
         {
             // ReSharper disable once NotResolvedInText
             return new ArgumentNullException("source");

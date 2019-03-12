@@ -8,7 +8,7 @@ namespace Lykke.Numerics
     public class MoneyConversionTests
     {
         [TestMethod]
-        public void Money_Should_Be_Serializable_To_Json_Without_Json_Converter()
+        public void Money_Should_Be_Serializable_To_Json()
         {
             JsonConvert
                 .SerializeObject(Money.Create(10, 5))
@@ -17,7 +17,7 @@ namespace Lykke.Numerics
         }
         
         [TestMethod]
-        public void Nullable_Money_Should_Be_Serializable_To_Json_Without_Json_Converter()
+        public void Nullable_Money_Should_Be_Serializable_To_Json()
         {
             JsonConvert
                 .SerializeObject((Money?) Money.Create(10, 5))
@@ -31,7 +31,7 @@ namespace Lykke.Numerics
         }
         
         [TestMethod]
-        public void Money_Should_Be_Deserializable_From_Json_Without_Json_Converter()
+        public void Money_Should_Be_Deserializable_From_Json()
         {
             JsonConvert
                 .DeserializeObject<Money>("\"10.00000\"")
@@ -40,7 +40,7 @@ namespace Lykke.Numerics
         }
         
         [TestMethod]
-        public void Nullable_Money_Should_Be_Deserializable_From_Json_Without_Json_Converter()
+        public void Nullable_Money_Should_Be_Deserializable_From_Json()
         {
             JsonConvert
                 .DeserializeObject<Money?>("\"10.00000\"")

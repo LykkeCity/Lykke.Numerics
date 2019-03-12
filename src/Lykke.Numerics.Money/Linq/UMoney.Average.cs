@@ -25,7 +25,7 @@ namespace Lykke.Linq
                 }
 
                 var sum = enumerator.Current;
-                var count = (ulong) 1;
+                var count = 1UL;
                 
                 checked
                 {
@@ -57,7 +57,7 @@ namespace Lykke.Linq
                     if (current.HasValue)
                     {
                         var sum = current.GetValueOrDefault();
-                        var count = (ulong) 1;
+                        var count = 1UL;
                         
                         checked
                         {

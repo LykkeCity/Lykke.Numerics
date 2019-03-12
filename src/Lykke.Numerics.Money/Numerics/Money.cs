@@ -8,6 +8,7 @@ namespace Lykke.Numerics
 {
 	[ImmutableObject(true)]
     [Serializable, PublicAPI]
+	[TypeConverter(typeof(MoneyTypeConverter))]
     public readonly partial struct Money
     {
 	    private static readonly Regex MoneyFormat = new Regex(@"^[+-]?\d+\.?\d*$", RegexOptions.Compiled);

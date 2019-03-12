@@ -1,11 +1,14 @@
 using System;
+using System.ComponentModel;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace Lykke.Numerics
 {
-	[PublicAPI]
+	[ImmutableObject(true)]
+	[Serializable, PublicAPI]
+	[TypeConverter(typeof(UMoneyTypeConverter))]
     public readonly partial struct UMoney
     {
         private static readonly Regex UMoneyFormat = new Regex(@"^[+]?\d+\.?\d*$", RegexOptions.Compiled);

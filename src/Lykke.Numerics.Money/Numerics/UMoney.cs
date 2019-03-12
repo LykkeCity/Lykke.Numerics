@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
-namespace Lykke.Numerics.Money
+namespace Lykke.Numerics
 {
 	[PublicAPI]
     public readonly partial struct UMoney

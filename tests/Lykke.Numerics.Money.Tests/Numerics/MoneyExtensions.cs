@@ -1,4 +1,4 @@
-namespace Lykke.Numerics.Money.Tests
+namespace Lykke.Numerics
 {
     public static class MoneyExtensions
     {

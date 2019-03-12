@@ -3,7 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Lykke.Numerics.Money.Tests
+namespace Lykke.Numerics
 {
     [TestClass]
     public class MoneyArithmeticTests

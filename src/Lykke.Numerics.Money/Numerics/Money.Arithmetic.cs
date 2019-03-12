@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using JetBrains.Annotations;
 
-namespace Lykke.Numerics.Money
+namespace Lykke.Numerics
 {
     public partial struct Money
     {

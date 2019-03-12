@@ -1,7 +1,7 @@
 using System;
 using JetBrains.Annotations;
 
-namespace Lykke.Numerics.Money
+namespace Lykke.Numerics
 {
     public partial struct Money : IEquatable<Money>
     {

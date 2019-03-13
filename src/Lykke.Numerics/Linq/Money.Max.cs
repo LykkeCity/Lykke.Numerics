@@ -5,7 +5,7 @@ using Lykke.Numerics.Utils;
 
 namespace Lykke.Numerics.Linq
 {
-    public static partial class Enumerable
+    public static partial class LykkeEnumerable
     {
         public static Money Max(
             this IEnumerable<Money> source)

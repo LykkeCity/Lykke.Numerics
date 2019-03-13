@@ -6,7 +6,7 @@ using static Lykke.Numerics.Utils.ThrowHelper;
 
 namespace Lykke.Numerics.Linq
 {
-    public static partial class Enumerable
+    public static partial class LykkeEnumerable
     {
         public static Money Sum(
             this IEnumerable<Money> source)

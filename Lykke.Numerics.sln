@@ -2,9 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C0AB9383-E6B1-4E2C-92D4-BA3685A82A33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Numerics.Money", "src\Lykke.Numerics.Money\Lykke.Numerics.Money.csproj", "{1D46FE45-0D81-49FE-9758-7044D2B24FCC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Numerics", "src\Lykke.Numerics\Lykke.Numerics.csproj", "{1D46FE45-0D81-49FE-9758-7044D2B24FCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Numerics.Money.Tests", "tests\Lykke.Numerics.Money.Tests\Lykke.Numerics.Money.Tests.csproj", "{DD99F01E-7FF9-440B-B243-8F6F82591DC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Numerics.Tests", "tests\Lykke.Numerics.Tests\Lykke.Numerics.Tests.csproj", "{DD99F01E-7FF9-440B-B243-8F6F82591DC9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{61C6EBA8-BD57-4551-B328-410CA7C0079E}"
 EndProject

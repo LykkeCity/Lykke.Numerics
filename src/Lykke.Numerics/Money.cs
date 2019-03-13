@@ -3,11 +3,14 @@ using System.ComponentModel;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
+using Lykke.Numerics.TypeConverters;
+using Lykke.Numerics.Utils;
 
-namespace Lykke.Numerics.Money
+namespace Lykke.Numerics
 {
 	[ImmutableObject(true)]
     [Serializable, PublicAPI]
+	[TypeConverter(typeof(MoneyTypeConverter))]
     public readonly partial struct Money
     {
 	    private static readonly Regex MoneyFormat = new Regex(@"^[+-]?\d+\.?\d*$", RegexOptions.Compiled);

@@ -1,8 +1,9 @@
 using System;
 using FluentAssertions;
+using Lykke.Numerics.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Lykke.Numerics.Money.Tests
+namespace Lykke.Numerics.Tests
 {
     [TestClass]
     public class MoneyCtorTests

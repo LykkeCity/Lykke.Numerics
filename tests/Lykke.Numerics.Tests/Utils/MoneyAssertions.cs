@@ -2,7 +2,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using FluentAssertions.Numeric;
 
-namespace Lykke.Numerics.Money.Tests
+namespace Lykke.Numerics.Tests.Utils
 {
     public class MoneyAssertions : NumericAssertions<Money>
     {

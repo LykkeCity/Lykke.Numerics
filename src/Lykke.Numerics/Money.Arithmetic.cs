@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using JetBrains.Annotations;
 
-namespace Lykke.Numerics.Money
+namespace Lykke.Numerics
 {
     public partial struct Money
     {
@@ -361,7 +361,7 @@ namespace Lykke.Numerics.Money
             
             if (significandScale <= scale)
             {
-                return significand * Pow10(significandScale + scale);
+                return significand * Pow10(scale - significandScale);
             }
             else
             {

@@ -1,26 +1,23 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Lykke.Numerics.Money.Tests
+namespace Lykke.Numerics.Tests
 {
     [TestClass]
-    public class UMoneyComparisonTests
+    public class MoneyComparisonsTests
     {
         [TestMethod]
         public void CompareTo__Integer_Value_Passed__Returns_Correct_Result()
         {
-            var money = new UMoney(42, 0);
-
-
-            (money >  -1).Should().BeTrue();
+            var money = new Money(42, 0);
+            
             (money <  43).Should().BeTrue();
             (money >  41).Should().BeTrue();
             (money <= 43).Should().BeTrue();
             (money >= 41).Should().BeTrue();
             (money <= 42).Should().BeTrue();
             (money >= 42).Should().BeTrue();
-
-            (-1 <  money).Should().BeTrue();
+            
             (43 >  money).Should().BeTrue();
             (41 <  money).Should().BeTrue();
             (43 >= money).Should().BeTrue();
@@ -47,7 +44,7 @@ namespace Lykke.Numerics.Money.Tests
         [TestMethod]
         public void CompareTo__Decimal_Value_Passed__Returns_Correct_Result()
         {
-            var money = new UMoney(42, 0);
+            var money = new Money(42, 0);
             
             (money <  43m).Should().BeTrue();
             (money >  41m).Should().BeTrue();
@@ -78,46 +75,11 @@ namespace Lykke.Numerics.Money.Tests
                 .Should()
                 .BeNegative();
         }
-        
-        [TestMethod]
-        public void CompareTo__Money_Value_Passed__Return_Correct_Result()
-        {
-            var money = new UMoney(42, 0);
-            
-            (money <  Money.Create(43m)).Should().BeTrue();
-            (money >  Money.Create(41m)).Should().BeTrue();
-            (money <= Money.Create(43m)).Should().BeTrue();
-            (money >= Money.Create(41m)).Should().BeTrue();
-            (money <= Money.Create(42m)).Should().BeTrue();
-            (money >= Money.Create(42m)).Should().BeTrue();
-            
-            (Money.Create(41m) <  money).Should().BeTrue();
-            (Money.Create(43m) >  money).Should().BeTrue();
-            (Money.Create(41m) <= money).Should().BeTrue();
-            (Money.Create(43m) >= money).Should().BeTrue();
-            (Money.Create(42m) <= money).Should().BeTrue();
-            (Money.Create(42m) >= money).Should().BeTrue();
-            
-            money
-                .CompareTo(Money.Create(41m))
-                .Should()
-                .BePositive();
-            
-            money
-                .CompareTo(Money.Create(42m))
-                .Should()
-                .Be(0);
-            
-            money
-                .CompareTo(Money.Create(43m))
-                .Should()
-                .BeNegative();
-        }
-        
+
         [TestMethod]
         public void Equals__Integer_Value_Passed__Return_Correct_Result()
         {
-            var money = new UMoney(42, 0);
+            var money = new Money(42, 0);
             
             (money == 42).Should().BeTrue();
             (money != 41).Should().BeTrue();
@@ -139,7 +101,7 @@ namespace Lykke.Numerics.Money.Tests
         [TestMethod]
         public void Equals__Decimal_Value_Passed__Return_Correct_Result()
         {
-            var money = new UMoney(42, 0);
+            var money = new Money(42, 0);
             
             (money == 42m).Should().BeTrue();
             (money != 41m).Should().BeTrue();
@@ -159,25 +121,42 @@ namespace Lykke.Numerics.Money.Tests
         }
         
         [TestMethod]
-        public void Equals__Money_Value_Passed__Return_Correct_Result()
+        public void Equals__Should_Ignore_Trailing_Zeroes()
         {
-            var money = new UMoney(42, 0);
-            
-            (money == Money.Create(42m)).Should().BeTrue();
-            (money != Money.Create(41m)).Should().BeTrue();
+            var left = new Money(42, 1);
+            var right = new Money(420, 2);
 
-            (Money.Create(42m) == money).Should().BeTrue();
-            (Money.Create(41m) != money).Should().BeTrue();
-            
-            money
-                .Equals(Money.Create(42m))
+            left.Equals(right)
                 .Should()
                 .BeTrue();
+        }
+
+        [TestMethod]
+        public void GetHashCode__Should_Be_Same_For_Equal_Values()
+        {
+            var left = (new Money(42, 1))
+                .GetHashCode();
             
-            money
-                .Equals(Money.Create(41m))
+            var right = (new Money(42, 1))
+                .GetHashCode();
+
+            left
                 .Should()
-                .BeFalse();
+                .Be(right);
+        }
+        
+        [TestMethod]
+        public void GetHashCode__Should_Ignore_Trailing_Zeroes()
+        {
+            var left = (new Money(42, 1))
+                .GetHashCode();
+            
+            var right = (new Money(420, 2))
+                .GetHashCode();
+
+            left
+                .Should()
+                .Be(right);
         }
     }
 }

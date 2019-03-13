@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Lykke.Numerics.Money
+namespace Lykke.Numerics
 {
     public partial struct Money
     {   

@@ -11,6 +11,7 @@ namespace Lykke.Numerics.Tests
         [DataTestMethod]
         [DataRow("42.05", 2, "4205")]
         [DataRow("42.35", 1, "424")]
+        [DataRow("42.56", 3, "42560")]
         public void Denominate__Returns_Correct_Result(
             string value,
             int scale,

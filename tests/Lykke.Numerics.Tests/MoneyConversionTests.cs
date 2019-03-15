@@ -8,6 +8,22 @@ namespace Lykke.Numerics.Tests
     [TestClass]
     public class MoneyConversionTests
     {
+        [DataTestMethod]
+        [DataRow("42.05", 2, "4205")]
+        [DataRow("42.35", 1, "424")]
+        public void Denominate__Returns_Correct_Result(
+            string value,
+            int scale,
+            string expectedResult)
+        {
+            var money = Money.Parse(value);
+
+            Money
+                .Denominate(money, scale)
+                .Should()
+                .Be(expectedResult);
+        }
+        
         [TestMethod]
         public void Money_Should_Be_Serializable_To_Json()
         {

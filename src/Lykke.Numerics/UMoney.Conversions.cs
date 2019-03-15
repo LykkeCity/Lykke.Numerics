@@ -4,6 +4,20 @@ namespace Lykke.Numerics
 {
     public partial struct UMoney
     {
+        /// <summary>
+        ///    Round specified value to the specified scale and express it as a significand.
+        /// </summary>
+        public static UMoney Denominate(
+            UMoney value,
+            int scale)
+        {
+            return new UMoney
+            (
+                significand: Money.Round(value._value, scale).Significand,
+                scale: 0
+            );
+        }
+        
         #region Operators
 
         // To UMoney

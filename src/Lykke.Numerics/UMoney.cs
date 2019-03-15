@@ -38,6 +38,14 @@ namespace Lykke.Numerics
         }
         
 
+        public BigInteger Significand
+	        => _value.Significand;
+
+        public int Scale
+	        => _value.Scale;
+        
+        
+        
         [Pure]
         public override int GetHashCode()
             => _value.GetHashCode();

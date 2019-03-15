@@ -34,6 +34,18 @@ namespace Lykke.Numerics
 			_significand = significand;
 			(_precision, _trailingZeroesCount) = CalculatePrecisionAndTrailingZeroesCount(_significand, _scale);
 		}
+
+
+        // ReSharper disable ConvertToAutoPropertyWithPrivateSetter
+        
+        public BigInteger Significand
+	        => _significand;
+
+        public int Scale
+	        => _scale;
+        
+        // ReSharper restore ConvertToAutoPropertyWithPrivateSetter
+        
         
         [Pure]
         public override int GetHashCode()

@@ -3,7 +3,21 @@ using System.Numerics;
 namespace Lykke.Numerics
 {
     public partial struct Money
-    {   
+    {
+        /// <summary>
+        ///    Round specified value to the specified scale and express it as a significand.
+        /// </summary>
+        public static Money Denominate(
+            Money value,
+            int scale)
+        {
+            return new Money
+            (
+                significand: Round(value, scale).Significand,
+                scale: 0
+            );
+        }
+        
         #region Operators
         
         public static implicit operator Money(BigInteger value)

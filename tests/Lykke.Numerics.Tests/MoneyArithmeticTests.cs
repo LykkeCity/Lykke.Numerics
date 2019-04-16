@@ -35,7 +35,7 @@ namespace Lykke.Numerics.Tests
         [DataRow("-1234.5678", "0.00009", "-1234.56771")]
         [DataRow("0.1234",     "0.5678",  "0.6912"     )]
         [DataRow("0.07",       "0.93",    "1.00"       )]
-        public void Add__Produces_CorrectResult(string a, string b, string c)
+        public void Add__Produces_Correct_Result(string a, string b, string c)
         {
             var (left, right) = Parse(a, b);
 
@@ -83,7 +83,7 @@ namespace Lykke.Numerics.Tests
         [DataRow("0.5", "0.5",  "1.0" )]
         [DataRow("1",   "0.5",  "2.0" )]
         [DataRow("1",   "0.1",  "10.0")]
-        public void Divide__Produces_CorrectResult(string a, string b, string c)
+        public void Divide__Produces_Correct_Result(string a, string b, string c)
         {
             var (left, right) = Parse(a, b);
 
@@ -115,7 +115,7 @@ namespace Lykke.Numerics.Tests
         [DataRow("-1.1", "-2.0")]
         [DataRow("-1.9", "-2.0")]
         [DataRow("-3.9", "-4.0")]
-        public void Floor__Produces_Correct_result(string a, string b)
+        public void Floor__Produces_Correct_Result(string a, string b)
         {
             Money
                 .Floor(Money.Parse(a))
@@ -140,7 +140,7 @@ namespace Lykke.Numerics.Tests
         [DataRow("10",   "0.1", "1.0" )]
         [DataRow("10.0", "0.1", "1.0" )]
         [DataRow("0.1",  "10",  "1.0" )]
-        public void Multiply__Produces_CorrectResult(string a, string b, string c)
+        public void Multiply__Produces_Correct_Result(string a, string b, string c)
         {
             var (left, right) = Parse(a, b);
 
@@ -274,7 +274,7 @@ namespace Lykke.Numerics.Tests
         [DataRow("-1234.5678", "0.00009", "-1234.56789")]
         [DataRow("0.1234",     "0.5678",  "-0.4444"    )]
         [DataRow("-0.07",      "0.93",    "-1.00"      )]
-        public void Subtract__Produces_CorrectResult(string a, string b, string c)
+        public void Subtract__Produces_Correct_Result(string a, string b, string c)
         {            
             var (left, right) = Parse(a, b);
 

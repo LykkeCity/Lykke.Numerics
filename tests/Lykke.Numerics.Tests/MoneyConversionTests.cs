@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using Lykke.Numerics.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -77,6 +78,18 @@ namespace Lykke.Numerics.Tests
                 .DeserializeObject<Money?>("null")
                 .Should()
                 .BeNull();
+        }
+
+        [DataTestMethod]
+        [DataRow("42.05", "42.05")]
+        [DataRow("42.00", "42")]
+        public void Cast_To_Decimal__Produces_Correct_Result(
+            string value,
+            string expectedResult)
+        {
+            ((decimal) Money.Parse(value))
+                .Should()
+                .Be(decimal.Parse(expectedResult));
         }
     }
 }

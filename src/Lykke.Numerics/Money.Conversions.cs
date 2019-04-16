@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 
 namespace Lykke.Numerics
@@ -73,6 +74,11 @@ namespace Lykke.Numerics
         public static explicit operator ulong(Money value)
         {
             return (ulong) (BigInteger) value;
+        }
+
+        public static explicit operator decimal(Money value)
+        {
+            return (decimal) value._significand / (decimal) Pow10(value._scale);
         }
         
         #endregion

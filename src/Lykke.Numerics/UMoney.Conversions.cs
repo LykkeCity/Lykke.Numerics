@@ -94,6 +94,11 @@ namespace Lykke.Numerics
             return (ulong) value._value;
         }
         
+        public static explicit operator decimal(UMoney value)
+        {
+            return (decimal) value._value;
+        }
+        
         #endregion
     }
 }

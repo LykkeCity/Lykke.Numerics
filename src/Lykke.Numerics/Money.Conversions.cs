@@ -1,4 +1,3 @@
-using System;
 using System.Numerics;
 
 namespace Lykke.Numerics
@@ -78,9 +77,27 @@ namespace Lykke.Numerics
 
         public static explicit operator decimal(Money value)
         {
-            return (decimal) value._significand / (decimal) Pow10(value._scale);
+            //return (decimal) value._significand / (decimal) Pow10(value._scale);
+            var decimalMaxValue = new BigInteger(decimal.MaxValue);
+            var scaleValue = Pow10(value._scale);
+            if (value._significand <= decimalMaxValue && scaleValue <= decimalMaxValue)
+                return (decimal)value._significand / (decimal)scaleValue;
+
+            var result = value._significand;
+            var scale = value._scale;
+            while (scale > 0 && result % 10 == 0)
+            {
+                result /= 10;
+                scale -= 1;
+            }
+
+            scaleValue = Pow10(scale);
+            if (result <= decimalMaxValue && scaleValue <= decimalMaxValue)
+                return (decimal)result / (decimal)scaleValue;
+
+            return decimal.Parse(value.ToString());
         }
-        
+
         #endregion
     }
 }

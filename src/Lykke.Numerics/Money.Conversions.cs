@@ -77,7 +77,6 @@ namespace Lykke.Numerics
 
         public static explicit operator decimal(Money value)
         {
-            //return (decimal) value._significand / (decimal) Pow10(value._scale);
             var decimalMaxValue = new BigInteger(decimal.MaxValue);
             var scaleValue = Pow10(value._scale);
             if (value._significand <= decimalMaxValue && scaleValue <= decimalMaxValue)

@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using Lykke.Numerics.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -90,6 +89,26 @@ namespace Lykke.Numerics.Tests
             ((decimal) Money.Parse(value))
                 .Should()
                 .Be(decimal.Parse(expectedResult));
+        }
+
+        [DataTestMethod]
+        public void Cast_To_Decimal_With_Overflowing_Significand_On_Trailing_Zeros__Produces_Correct_Result()
+        {
+            var decimalMaxValue = (Money)decimal.MaxValue;
+            var overflowingInDecimal = new Money(decimalMaxValue.Significand * 10, 1);
+            ((decimal)overflowingInDecimal)
+                .Should()
+                .Be(decimal.MaxValue);
+        }
+
+        [DataTestMethod]
+        public void Cast_To_Decimal_With_Overflowing_Significand__Produces_Correct_Result()
+        {
+            var decimalMaxValue = (Money)decimal.MaxValue;
+            var overflowingInDecimal = new Money(decimalMaxValue.Significand * 10 - 1, 1);
+            ((decimal)overflowingInDecimal)
+                .Should()
+                .Be(decimal.MaxValue);
         }
     }
 }
